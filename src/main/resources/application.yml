@@ -42,5 +42,16 @@ redis:
   testOnBorrow: true
     #在空闲时检查有效性, 默认false
   testWhileIdle: true
+spring:
+  application:
+    name: MICROSERVICE-PLATFORM-FACE-YUNTIAN
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/
+
+
+
 
 
