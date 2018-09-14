@@ -1,6 +1,12 @@
-package com.anjuxing.platform.face.yuntian.Service;
+package com.anjuxing.platform.face.yuntian.Service.impl;
 
+import com.anjuxing.platform.face.yuntian.Service.LocalFaceImageService;
+import com.anjuxing.platform.face.yuntian.Service.LocalTokenService;
+import com.anjuxing.platform.face.yuntian.Service.LocalUploadImageService;
+import com.anjuxing.platform.face.yuntian.Service.RedisRepository;
+import com.anjuxing.platform.face.yuntian.Service.remote.RemoteFaceImageService;
 import com.anjuxing.platform.face.yuntian.Service.remote.RemoteUploadImageService;
+import com.anjuxing.platform.face.yuntian.model.DataResult;
 import com.anjuxing.platform.face.yuntian.model.UploadImageResult;
 import com.anjuxing.platform.face.yuntian.properties.UploadType;
 import com.anjuxing.platform.face.yuntian.properties.YuntianPropeties;
@@ -41,6 +47,9 @@ public class LocalUploadImageServiceImpl implements LocalUploadImageService {
     @Autowired
     private ObjectMapper mapper;
 
+    @Autowired
+    private LocalFaceImageService localFaceImageService;
+
     @Override
     public UploadImageResult getUploadImageResult(MultipartFile file , UploadType uploadType) throws IOException {
 
@@ -51,13 +60,19 @@ public class LocalUploadImageServiceImpl implements LocalUploadImageService {
 
         String authorization = YuntianConstanse.AUTHORIZATION_BERAER+ redis.getAccessToken();
 
+
         String datas = remoteUploadImageService.imageUpload(uploadType.getValue(),file,authorization);
 
         logger.info("return remote data :" + datas);
 
         DataResult dataResult = mapper.readValue(datas,DataResult.class);
 
-        return dataResult.uploadImage();
+        UploadImageResult uploadImageResult = uploadImageResult(dataResult.getData());
+
+        uploadImageResult.setSmallFaceImageResults(localFaceImageService.fetchSmallFaceImage(uploadImageResult.getId()));
+
+        //调用小图像
+        return uploadImageResult;
     }
 
     @Override
@@ -65,56 +80,22 @@ public class LocalUploadImageServiceImpl implements LocalUploadImageService {
         return null;
     }
 
-    private class DataResult {
-        private String data;
 
-        private int errCode;
 
-        private int maxPage;
-
-        private int total;
-
-        public String getData() {
-            return data;
+    private UploadImageResult uploadImageResult(Object data){
+        UploadImageResult uploadImage = null;
+        if (Objects.nonNull(data)){
+            uploadImage = mapper.convertValue(data,UploadImageResult.class);
+        } else {
+            uploadImage = new UploadImageResult();
         }
 
-        public void setData(String data) {
-            this.data = data;
-        }
+        return uploadImage;
 
-        public int getErrCode() {
-            return errCode;
-        }
-
-        public void setErrCode(int errCode) {
-            this.errCode = errCode;
-        }
-
-        public int getMaxPage() {
-            return maxPage;
-        }
-
-        public void setMaxPage(int maxPage) {
-            this.maxPage = maxPage;
-        }
-
-        public int getTotal() {
-            return total;
-        }
-
-        public void setTotal(int total) {
-            this.total = total;
-        }
-
-        private UploadImageResult uploadImage() throws IOException {
-
-            UploadImageResult uploadImage = null;
-            if (org.apache.commons.lang3.StringUtils.isNotEmpty(data)){
-                uploadImage = mapper.readValue(data,UploadImageResult.class);
-            }
-
-            return  Objects.nonNull(uploadImage) ? uploadImage : new UploadImageResult();
-
-        }
     }
+
+
+
+
+
 }

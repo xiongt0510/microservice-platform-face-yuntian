@@ -19,7 +19,8 @@ public interface RemoteUploadImageService {
      String imageUpload(
             @RequestParam("type") int type,
             @RequestPart("file") MultipartFile file,
-            @RequestHeader("Authorization")String authorization);
+            @RequestHeader("Authorization")String authorization
+    );
 
 
 

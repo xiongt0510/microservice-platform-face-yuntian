@@ -4,18 +4,29 @@ server:
 yuntian:
   token:
     name: YUNTIAN-SERVICE
-    url: http://190.35.192.2:8083/api/oauth/token
+    url: http://190.35.194.192:8083/api/oauth/token
   image:
     upload:
       name: YUNTIAN-SERVICE
-      url: http://190.35.192.2:8083/api/intellif/image/upload
+      url: http://190.35.194.192:8083/api/intellif/image/upload
   face:
     name: YUNTIAN-SERVICE
-    url: http://190.35.192.2:8083/api/intellif/face
+    url: http://190.35.194.192:8083/api/intellif/face
+    image:
+      name: YUNTIAN-SERVICE
+      url: http://190.35.194.192:8083/api/intellif/face/image
+  anjuxing:
+    upload:
+      name: YUNTIAN-SERVICE
+      url: http://190.35.194.192:8083/api/intellif/anjuxing/upload
+  client:
+      username: ajx
+      password: e10adc3949ba59abbe56e057f20f883e
 
   feign:
     httpclient:
       enabled: true
+
 
 redis:
   hostName: localhost
@@ -45,11 +56,23 @@ redis:
 spring:
   application:
     name: MICROSERVICE-PLATFORM-FACE-YUNTIAN
+  http:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:9000/eureka/
+
+
+
+
+
+
+
+
 
 
 

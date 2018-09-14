@@ -1,5 +1,7 @@
-package com.anjuxing.platform.face.yuntian.Service;
+package com.anjuxing.platform.face.yuntian.Service.impl;
 
+import com.anjuxing.platform.face.yuntian.Service.LocalTokenService;
+import com.anjuxing.platform.face.yuntian.Service.RedisRepository;
 import com.anjuxing.platform.face.yuntian.Service.remote.RemoteTokenService;
 import com.anjuxing.platform.face.yuntian.model.Token;
 import com.anjuxing.platform.face.yuntian.properties.ClientProperties;
@@ -31,7 +33,7 @@ public class LocalTokenServiceImpl implements LocalTokenService {
     private RedisRepository redis;
 
     @Override
-    public Token getLocalToken(ClientProperties client) throws IOException {
+    public Token getLocalToken(ClientProperties client)  {
 
         String clientId = client.getClientId();
         String clientSecret = client.getClientSecret();
@@ -47,7 +49,12 @@ public class LocalTokenServiceImpl implements LocalTokenService {
 
         logger.info("return remote data :" + data);
 
-        Token token = mapper.readValue(data,Token.class);
+        Token token = null;
+        try {
+            token = mapper.readValue(data,Token.class);
+        } catch (IOException e) {
+            throw new  RuntimeException("获取token 异常!");
+        }
 
         //如果redis 中没有存储就存到redis 中
         if (org.apache.commons.lang3.StringUtils.isEmpty(redis.getAccessToken())){

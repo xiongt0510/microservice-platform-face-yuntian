@@ -1,5 +1,7 @@
 package com.anjuxing.platform.face.yuntian.model;
 
+import java.util.List;
+
 /**
  * @author xiongt
  * @Description 图片上传返回对象
@@ -7,6 +9,8 @@ package com.anjuxing.platform.face.yuntian.model;
 public class UploadImageResult {
 
     private String id;
+
+
 
     private long time;
 
@@ -17,6 +21,8 @@ public class UploadImageResult {
     private String redUri;
 
     private int faces;
+
+    private List<SmallFaceImageResult> smallFaceImageResults;
 
     public String getId() {
         return id;
@@ -64,6 +70,14 @@ public class UploadImageResult {
 
     public void setFaces(int faces) {
         this.faces = faces;
+    }
+
+    public List<SmallFaceImageResult> getSmallFaceImageResults() {
+        return smallFaceImageResults;
+    }
+
+    public void setSmallFaceImageResults(List<SmallFaceImageResult> smallFaceImageResults) {
+        this.smallFaceImageResults = smallFaceImageResults;
     }
 
     @Override

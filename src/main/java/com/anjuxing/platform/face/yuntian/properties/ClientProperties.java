@@ -8,15 +8,15 @@ public class ClientProperties {
 
     private String grantType = "password";
 
-    private String username = "";
+    private String username = "anjuxing";
 
-    private String password = "";
+    private String password = "71d9ee5abf901bfb99b6fc0502aaae1f";
 
     private String scope = "read+write";
 
-    private String clientId = "";
+    private String clientId = "clientapp";
 
-    private String clientSecret = "";
+    private String clientSecret = "123456";
 
     public String getGrantType() {
         return grantType;
