@@ -1,6 +1,6 @@
 package com.anjuxing.platform.face.yuntian.controller;
 
-import com.anjuxing.platform.face.yuntian.Service.LocalTokenService;
+import com.anjuxing.platform.face.yuntian.Service.TokenService;
 import com.anjuxing.platform.face.yuntian.model.Token;
 import com.anjuxing.platform.face.yuntian.properties.YuntianPropeties;
 import com.anjuxing.platform.face.yuntian.util.YuntianConstanse;
@@ -23,12 +23,12 @@ public class TokenController {
     private YuntianPropeties yt;
 
     @Autowired
-    private LocalTokenService localTokenService;
+    private TokenService localTokenService;
 
     @GetMapping
     public Token getToken() throws IOException {
 
-        Token token = localTokenService.getLocalToken(yt.getClient());
+        Token token = localTokenService.getToken(yt.getClient());
 
         return token;
     }

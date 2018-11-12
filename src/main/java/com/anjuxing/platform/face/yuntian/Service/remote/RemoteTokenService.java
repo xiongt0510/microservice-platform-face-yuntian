@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author xiongt
  * @Description
  */
-@FeignClient(name = "${yuntian.token.name}", url = "${yuntian.token.url}")
+@FeignClient(name = "${yuntian.service.name}", url = "${yuntian.token.url}")
 public interface RemoteTokenService {
 
     @PostMapping( consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

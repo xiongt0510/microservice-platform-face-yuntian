@@ -6,7 +6,7 @@ import java.util.List;
  * @author xiongt
  * @Description
  */
-public class FaceVideoResult {
+public class ImageVideoCompareResult {
 
     /** success 或 fail */
     private String state ;

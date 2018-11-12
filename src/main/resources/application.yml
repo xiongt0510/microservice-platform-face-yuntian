@@ -2,26 +2,27 @@ server:
   port: 2001
 
 yuntian:
-  token:
+  service:
     name: YUNTIAN-SERVICE
+  token:
     url: http://190.35.194.192:8083/api/oauth/token
   image:
     upload:
-      name: YUNTIAN-SERVICE
       url: http://190.35.194.192:8083/api/intellif/image/upload
-  face:
-    name: YUNTIAN-SERVICE
-    url: http://190.35.194.192:8083/api/intellif/face
-    image:
-      name: YUNTIAN-SERVICE
+    small:
       url: http://190.35.194.192:8083/api/intellif/face/image
+    compare:
+      url: http://190.35.194.192:8083/api/intellif/face/compare
+    search:
+      url: http://190.35.194.198:8063/api/intellif/mining/analysis/searchpeopleinfo
   anjuxing:
     upload:
-      name: YUNTIAN-SERVICE
       url: http://190.35.194.192:8083/api/intellif/anjuxing/upload
   client:
       username: ajx
       password: e10adc3949ba59abbe56e057f20f883e
+
+
 
   feign:
     httpclient:

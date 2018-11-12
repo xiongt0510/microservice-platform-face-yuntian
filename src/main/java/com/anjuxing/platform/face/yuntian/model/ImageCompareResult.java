@@ -4,7 +4,7 @@ package com.anjuxing.platform.face.yuntian.model;
  * @author xiongt
  * @Description 人脸比对返回结果
  */
-public class FaceCompareResult {
+public class ImageCompareResult {
 
     private float threshold;
 

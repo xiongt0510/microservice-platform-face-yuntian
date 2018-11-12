@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author xiongt
  * @Description 1：1人脸比对参数
  */
-public class FaceCompareParam implements Serializable {
+public class ImageCompareParam implements Serializable {
 
     private long faceIdA;
 

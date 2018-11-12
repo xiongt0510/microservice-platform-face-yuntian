@@ -22,7 +22,7 @@ public class UploadImageResult {
 
     private int faces;
 
-    private List<SmallFaceImageResult> smallFaceImageResults;
+    private List<SmallImageResult> smallFaceImageResults;
 
     public String getId() {
         return id;
@@ -72,11 +72,11 @@ public class UploadImageResult {
         this.faces = faces;
     }
 
-    public List<SmallFaceImageResult> getSmallFaceImageResults() {
+    public List<SmallImageResult> getSmallFaceImageResults() {
         return smallFaceImageResults;
     }
 
-    public void setSmallFaceImageResults(List<SmallFaceImageResult> smallFaceImageResults) {
+    public void setSmallFaceImageResults(List<SmallImageResult> smallFaceImageResults) {
         this.smallFaceImageResults = smallFaceImageResults;
     }
 
