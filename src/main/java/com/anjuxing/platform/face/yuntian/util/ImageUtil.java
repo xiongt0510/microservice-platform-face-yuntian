@@ -13,33 +13,8 @@ import java.net.URL;
  */
 public class ImageUtil {
 
-    /**
-     * 将一张网络图片转化成Base64字符串
-     * @param imgURL
-     * @return
-     */
-    public static String getImageStrFromUrl(String imgURL) {
 
-        byte[] data = null;
-        try {
-            // 创建URL
-            URL url = new URL(imgURL);
-            // 创建链接
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setConnectTimeout(5 * 1000);
-            InputStream inStream = conn.getInputStream();
-            data = new byte[inStream.available()];
-            inStream.read(data);
-            inStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // 对字节数组Base64编码
-        BASE64Encoder encoder = new BASE64Encoder();
-        // 返回Base64编码过的字节数组字符串
-        return encoder.encode(data);
-    }
+
 
     /**
      * 将一张本地图片转化成Base64字符串
@@ -91,6 +66,40 @@ public class ImageUtil {
         } catch (Exception e) {
             return false;
         }
+    }
+
+
+    /**
+     * 将一张网络图片转化成Base64字符串
+     * @param imgURL
+     * @return
+     */
+    public static String getImageStrFromUrl(String imgURL){
+        ByteArrayOutputStream data = new ByteArrayOutputStream();
+        try {
+            // 创建URL
+            URL url = new URL(imgURL);
+            byte[] by = new byte[1024];
+            // 创建链接
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(5 * 1000);
+            InputStream is = conn.getInputStream();
+            // 将内容读取内存中
+            int len = -1;
+            while ((len = is.read(by)) != -1) {
+                data.write(by, 0, len);
+            }
+            // 关闭流
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 对字节数组Base64编码
+        BASE64Encoder encoder = new BASE64Encoder();
+        String str = encoder.encode(data.toByteArray());
+
+        return str;
     }
 
 

@@ -69,7 +69,7 @@ public class TokenServiceImpl implements TokenService {
         pairs.add(passwordPair);
         pairs.add(scopePair);
 
-        String url = " http://190.35.194.192:8083/api/oauth/token";
+        String url = "http://190.35.194.192:8083/api/oauth/token";
         String data = HttpClientUtils.httpResponseString(url,authorization,new UrlEncodedFormEntity(pairs, HTTP.UTF_8));
 
 //        String data = remoteService.getToken(grantType,username,password,scope

@@ -3,12 +3,14 @@ package com.anjuxing.platform.face.yuntian.controller;
 import com.anjuxing.platform.face.yuntian.Service.ImageService;
 import com.anjuxing.platform.face.yuntian.model.*;
 import com.anjuxing.platform.face.yuntian.properties.UploadType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author xiongt
@@ -20,6 +22,9 @@ public class ImageController {
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @PostMapping("/upload/file")
     public UploadImageResult uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
@@ -49,8 +54,20 @@ public class ImageController {
     }
 
     @PostMapping(value = "/search")
-    public ImageSearchResult imageSearch() throws IOException {
-        return imageService.imageSearch();
+    public String imageSearch(
+            @RequestParam("communityId") String communityId ,
+            @RequestParam("threshold") String threshold,
+            @RequestParam("imageUrl") String imageUrl,
+            @RequestParam("size") int size) throws IOException {
+
+        String result  = imageService.imageSearch(communityId,threshold,imageUrl,size);
+
+//        ImageSearchResult imageSearchResult =  objectMapper.readValue(objectMapper.readTree(result).path("data").toString(),ImageSearchResult.class);
+//
+//        if (Objects.isNull(imageSearchResult)){
+//            imageSearchResult
+//        }
+        return result;
     }
 
 }

@@ -207,18 +207,27 @@ public class ImageServiceImpl implements ImageService {
     }
 
 
-
+    /**
+     *
+     * @param communityId "ca9a6d59-cd7c-4444-b16a-7584d851528b"
+     * @param threshold "0.92"
+     * @param imageUrl ImageUtil.getImageUrlFromPath("G:\\864707704277677402.jpg")
+     * @param size 1
+     * @return
+     * @throws IOException
+     */
     @Override
-    public ImageSearchResult imageSearch() throws IOException {
+    public String imageSearch(String communityId,
+                                         String threshold,String imageUrl,int size) throws IOException {
 
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("labels","1");
-        paramMap.put("communityId","ca9a6d59-cd7c-4444-b16a-7584d851528b");
-        paramMap.put("threshold","0.92");
-        paramMap.put("base64pic", ImageUtil.getImageUrlFromPath("G:\\864707704277677402.jpg"));
+        paramMap.put("communityId",communityId);
+        paramMap.put("threshold",threshold);
+        paramMap.put("base64pic",ImageUtil.getImageStrFromUrl(imageUrl) );
         paramMap.put("urlpic","1");
         paramMap.put("key","8192302-sd9230043-3232122");
-        paramMap.put("size",1);
+        paramMap.put("size",size);
 
         String url = "http://190.35.194.198:8063/api/intellif/mining/analysis/searchpeopleinfo";
 
@@ -232,7 +241,8 @@ public class ImageServiceImpl implements ImageService {
         String result = HttpClientUtils.callRemote4JsonString(url,authorization,jsonParam);
         logger.info(result);
 
-        return new ImageSearchResult();
+
+        return result;
     }
 
 

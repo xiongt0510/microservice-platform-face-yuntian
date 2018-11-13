@@ -56,5 +56,6 @@ public interface ImageService {
      * 图像搜索
      * @return
      */
-    ImageSearchResult imageSearch() throws IOException;
+    String imageSearch(String communityId,
+                                  String threshold,String imageUrl,int size) throws IOException;
 }
