@@ -1,6 +1,7 @@
 package com.anjuxing.platform.face.yuntian.Service.impl;
 
 import com.anjuxing.platform.face.yuntian.Service.RemoteService;
+import com.anjuxing.platform.face.yuntian.Service.SpringCacheRepository;
 import com.anjuxing.platform.face.yuntian.Service.TokenService;
 import com.anjuxing.platform.face.yuntian.Service.RedisRepository;
 import com.anjuxing.platform.face.yuntian.Service.remote.RemoteTokenService;
@@ -16,6 +17,7 @@ import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -40,6 +42,10 @@ public class TokenServiceImpl implements TokenService {
 
     @Autowired
     private RedisRepository redis;
+
+    @Autowired
+    private SpringCacheRepository springCache;
+
 
     @Override
     public Token getToken(ClientProperties client) throws IOException {
@@ -85,10 +91,33 @@ public class TokenServiceImpl implements TokenService {
         }
 
         //如果redis 中没有存储就存到redis 中
-        if (org.apache.commons.lang3.StringUtils.isEmpty(redis.getAccessToken())){
-            redis.save(token);
+//        if (org.apache.commons.lang3.StringUtils.isEmpty(redis.getAccessToken())){
+//            redis.save(token);
+//        }
+
+        if (org.apache.commons.lang3.StringUtils.isEmpty(springCache.getAccessToken())){
+            springCache.save(token);
         }
 
         return token;
     }
+
+    public boolean isInvalidToken(String result) throws IOException {
+
+        boolean isInvalidToken = false;
+        boolean isError = mapper.readTree(result).has("error");
+
+        if (isError){
+           String invalidToken = mapper.readTree(result).path("error").asText();
+
+           if ("invalid_token".equals(invalidToken)){
+               isInvalidToken = true;
+           }
+
+        }
+
+        return isInvalidToken;
+
+    }
+
 }

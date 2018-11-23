@@ -15,4 +15,7 @@ public interface TokenService {
 
     Token getToken(ClientProperties client) throws IOException;
 
+
+    boolean isInvalidToken(String result) throws IOException;
+
 }

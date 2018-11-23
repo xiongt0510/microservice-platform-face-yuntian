@@ -34,6 +34,7 @@ public class HttpClientUtils {
 
         String respContent = "";
         CloseableHttpClient httpclient = HttpClients.createDefault();
+
         HttpPost httpPost = new HttpPost(url);
 
         httpPost.addHeader("Authorization",authorization);
@@ -41,6 +42,7 @@ public class HttpClientUtils {
         httpPost.setEntity(entity);
 
         HttpResponse resp = httpclient.execute(httpPost);
+
         if(resp.getStatusLine().getStatusCode() == 200) {
             HttpEntity he = resp.getEntity();
             respContent = EntityUtils.toString(he,"UTF-8");
