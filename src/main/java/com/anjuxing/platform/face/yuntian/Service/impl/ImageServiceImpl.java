@@ -264,6 +264,30 @@ public class ImageServiceImpl implements ImageService {
         return result;
     }
 
+    @Override
+    public String imageMultiSearch(ImageMultiRequestParam param) throws IOException {
+
+        String url = "http://190.35.194.198:8063/api/intellif/mining/analysis/anjuxing/photos/confirm/peopleinfo";
+
+        //如果redis 中没有token 就重新获取并存储到redis 中
+        if (StringUtils.isEmpty(springCache.getAccessToken())){
+            tokenService.getToken(yt.getClient());
+        }
+
+        String authorization = YuntianConstanse.AUTHORIZATION_BERAER+ springCache.getAccessToken();
+
+        String jsonParam = mapper.writeValueAsString(param);
+
+        String result = HttpClientUtils.callRemote4JsonString(url,authorization,jsonParam);
+
+        logger.info(result);
+        //如果是个无效的token
+        if (tokenService.isInvalidToken(result)){
+            springCache.removeToken();
+            imageMultiSearch(param);
+        }
+        return result;
+    }
 
 
 }

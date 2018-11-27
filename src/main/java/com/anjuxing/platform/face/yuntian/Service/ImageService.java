@@ -58,4 +58,6 @@ public interface ImageService {
      */
     String imageSearch(String communityId,
                                   String threshold,String imageUrl,int size) throws IOException;
+
+    String imageMultiSearch(ImageMultiRequestParam param) throws IOException;
 }
