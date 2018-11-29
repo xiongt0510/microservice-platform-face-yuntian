@@ -4,19 +4,17 @@ import com.anjuxing.platform.face.yuntian.Service.ImageService;
 import com.anjuxing.platform.face.yuntian.model.*;
 import com.anjuxing.platform.face.yuntian.properties.UploadType;
 import com.anjuxing.platform.face.yuntian.util.ImageUtil;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import static com.anjuxing.platform.face.yuntian.model.ImageMultiRequestParam.PhotoRequest;
 
 import java.io.IOException;
-import java.util.Base64;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -88,7 +86,7 @@ public class ImageController {
 
         ImageMultiRequestParam param = new ImageMultiRequestParam();
         param.setCommunityId(communityId);
-        param.setHouseId(houseId);
+        param.setHouseCode(houseId);
         param.setPeopleId(peopleId);
         param.setThreshold(threshold);
 
@@ -97,12 +95,20 @@ public class ImageController {
         if (jsonNode.isArray()){
            List<PhotoParam> photoParams =  objectMapper.readValue(String.valueOf(jsonNode),new TypeReference<List<PhotoParam>>(){});
            if (Objects.nonNull(photoParams) && photoParams.size() > 0){
-
+                List<PhotoRequest> photoRequests = new ArrayList<>();
                for (PhotoParam photoParam : photoParams){
-                   photoParam.setBase64(ImageUtil.getImageStrFromUrl(photoParam.getPhotoUrl()));
+                   if (StringUtils.isEmpty(photoParam.getPhotoUrl())) continue;
+                   PhotoRequest photoRequest = new PhotoRequest();
+                   photoRequest.setId(photoParam.getId());
+                   photoRequest.setBase64(ImageUtil.getImageStrFromUrl(photoParam.getPhotoUrl()));
+                   photoRequests.add(photoRequest);
                }
-               param.setPhotos(objectMapper.writeValueAsString(photoParams));
+
+               param.setPhotos(photoRequests);
            }
+
+
+
         }
 
         if (StringUtils.isEmpty(param.getPhotos())){
@@ -112,14 +118,9 @@ public class ImageController {
       return  imageService.imageMultiSearch(param);
     }
 
-    private class PhotoParam{
-
-        private String id;
-
-        @JsonIgnore
+    private static class PhotoParam{
+        private String id ;
         private String photoUrl;
-
-        private String base64;
 
         public String getId() {
             return id;
@@ -136,14 +137,7 @@ public class ImageController {
         public void setPhotoUrl(String photoUrl) {
             this.photoUrl = photoUrl;
         }
-
-        public String getBase64() {
-            return base64;
-        }
-
-        public void setBase64(String base64) {
-            this.base64 = base64;
-        }
     }
+
 
 }

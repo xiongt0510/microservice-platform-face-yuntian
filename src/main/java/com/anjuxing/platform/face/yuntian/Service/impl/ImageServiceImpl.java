@@ -230,26 +230,17 @@ public class ImageServiceImpl implements ImageService {
         paramMap.put("key","8192302-sd9230043-3232122");
         paramMap.put("size",size);
 
-        String url = "http://190.35.194.198:8063/api/intellif/mining/analysis/searchpeopleinfo";
+
 
         //如果redis 中没有token 就重新获取并存储到redis 中
         if (StringUtils.isEmpty(springCache.getAccessToken())){
             tokenService.getToken(yt.getClient());
         }
 
-
-
-
-
         String authorization = YuntianConstanse.AUTHORIZATION_BERAER+ springCache.getAccessToken();
 
-//        logger.info("index :" + i);
-//        if (i == 5){
-//            authorization = YuntianConstanse.AUTHORIZATION_BERAER +"13cb7be3-9ab4-49bd-bb2d-912915486022";
-//        }
-
         String jsonParam = mapper.writeValueAsString(paramMap);
-        String result = HttpClientUtils.callRemote4JsonString(url,authorization,jsonParam);
+        String result = HttpClientUtils.callRemote4JsonString(YuntianConstanse.IMAGE_ONE_SEARCH,authorization,jsonParam);
 
 
         logger.info(result);
@@ -267,7 +258,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public String imageMultiSearch(ImageMultiRequestParam param) throws IOException {
 
-        String url = "http://190.35.194.198:8063/api/intellif/mining/analysis/anjuxing/photos/confirm/peopleinfo";
+//        String url = "http://190.35.194.198:8063/api/intellif/mining/analysis/anjuxing/photos/confirm/peopleinfo";
 
         //如果redis 中没有token 就重新获取并存储到redis 中
         if (StringUtils.isEmpty(springCache.getAccessToken())){
@@ -278,7 +269,7 @@ public class ImageServiceImpl implements ImageService {
 
         String jsonParam = mapper.writeValueAsString(param);
 
-        String result = HttpClientUtils.callRemote4JsonString(url,authorization,jsonParam);
+        String result = HttpClientUtils.callRemote4JsonString(YuntianConstanse.IMAGE_MULTI_SEARCH,authorization,jsonParam);
 
         logger.info(result);
         //如果是个无效的token
